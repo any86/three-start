@@ -33147,42 +33147,26 @@ function default_1(_a) {
 
 exports["default"] = default_1;
 ;
-},{"three":"node_modules/three/build/three.module.js"}],"object3D/font.ts":[function(require,module,exports) {
+},{"three":"node_modules/three/build/three.module.js"}],"object3D/box.ts":[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
 
 var three_1 = require("three");
 
-exports["default"] = function () {
-  return new Promise(function (resolve, reject) {
-    try {
-      var loader = new three_1.FontLoader();
-      loader.load("./Alex.json", function (font) {
-        // 文字
-        var geometry = new three_1.TextGeometry('Soufeel', {
-          font: font,
-          height: 10,
-          bevelSize: 1,
-          bevelEnabled: true,
-          bevelThickness: 1
-        }); // 材质
-
-        var material = new three_1.MeshPhongMaterial({
-          // map: texture,
-          color: 0xd16a0e,
-          specular: 0xd16a0e,
-          shininess: 97
-        }); //3D文字材质
-
-        var mesh = new three_1.Mesh(geometry, material);
-        resolve(mesh);
-      });
-    } catch (error) {
-      reject(error);
-    }
+function default_1() {
+  var geometry = new three_1.BoxGeometry(100, 100, 100);
+  var material = new three_1.MeshPhongMaterial({
+    color: 0xff0000,
+    specular: 0xff0000
   });
-};
+  var mesh = new three_1.Mesh(geometry, material);
+  mesh.position.y = 50;
+  mesh.castShadow = true;
+  return mesh;
+}
+
+exports["default"] = default_1;
 },{"three":"node_modules/three/build/three.module.js"}],"node_modules/dat.gui/build/dat.gui.module.js":[function(require,module,exports) {
 "use strict";
 
@@ -36240,7 +36224,7 @@ var three_1 = require("three");
 
 var plane_1 = __importDefault(require("./object3D/plane"));
 
-var font_1 = __importDefault(require("./object3D/font")); // 渲染器
+var box_1 = __importDefault(require("./object3D/box")); // 渲染器
 
 
 var renderer = new three_1.WebGLRenderer({
@@ -36274,7 +36258,8 @@ camera.lookAt(scene.position); // 辅助线
 
 scene.add(new three_1.AxesHelper(130)); // 平面
 
-scene.add(plane_1["default"]()); // 球体
+scene.add(plane_1["default"]());
+scene.add(box_1["default"]()); // 球体
 // scene.add(createSphere());
 // 光源
 
@@ -36295,22 +36280,11 @@ scene.add(spotLight);
       renderer.render(scene, camera);
     }
 
-    var fontMesh;
     return __generator(this, function (_a) {
-      switch (_a.label) {
-        case 0:
-          return [4
-          /*yield*/
-          , font_1["default"]()];
-
-        case 1:
-          fontMesh = _a.sent();
-          scene.add(fontMesh);
-          render3();
-          return [2
-          /*return*/
-          ];
-      }
+      render3();
+      return [2
+      /*return*/
+      ];
     });
   });
 }(); // const log = console.log;
@@ -36338,7 +36312,7 @@ scene.add(spotLight);
 // anyTouch.on('panright', e => {
 //     // console.warn(e.type);
 // });
-},{"three":"node_modules/three/build/three.module.js","./object3D/plane":"object3D/plane.ts","./object3D/font":"object3D/font.ts","dat.gui":"node_modules/dat.gui/build/dat.gui.module.js"}],"node_modules/_parcel-bundler@1.10.3@parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"three":"node_modules/three/build/three.module.js","./object3D/plane":"object3D/plane.ts","./object3D/box":"object3D/box.ts","dat.gui":"node_modules/dat.gui/build/dat.gui.module.js"}],"node_modules/_parcel-bundler@1.10.3@parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -36365,7 +36339,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62921" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49930" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

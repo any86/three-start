@@ -8,12 +8,14 @@ import {
     MeshBasicMaterial, DirectionalLight,
     TextGeometry, SpotLight, SpotLightHelper,
     PointLight, AmbientLight,
-    AxesHelper,
+    AxesHelper,CubeGeometry,
     Object3D
 } from 'three';
 import createPlane from './object3D/plane';
 import createFont from './object3D/font';
 import createSphere from './object3D/sphere';
+import createBox from './object3D/box';
+
 
 // 渲染器
 let renderer = new WebGLRenderer({ antialias: true });
@@ -47,6 +49,11 @@ scene.add(new AxesHelper(130));
 // 平面
 scene.add(createPlane());
 
+scene.add(createBox());
+
+
+
+
 // 球体
 // scene.add(createSphere());
 
@@ -60,16 +67,7 @@ scene.add(spotLight);
 
 
 
-
-
 !async function () {
-    //矩形
-    
-
-
-
-
-
     function render3() {
         requestAnimationFrame(render3);
         scene.remove(spotLight);
