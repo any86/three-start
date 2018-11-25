@@ -1,8 +1,9 @@
 {
   "scripts": {
-    "dev": "parcel indeax.html --open"
+    "dev": "parcel index.html --open"
   },
   "devDependencies": {
+    "@types/three": "^0.93.10",
     "dat.gui": "^0.7.3",
     "parcel-bundler": "^1.10.3",
     "three": "^0.98.0",
