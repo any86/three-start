@@ -36667,8 +36667,8 @@ objLoader.load('EW001.obj', function (obj) {
   // scene.add(createBox());
   console.log(obj);
   obj.position.y = 50;
-  obj.position.z = 50;
-  obj.scale(x, y);
+  obj.position.z = 50; // obj.scale(x, y);
+
   scene.add(obj);
   scene.remove(spotLight);
   spotLight = new SpotLight(0xffffff);

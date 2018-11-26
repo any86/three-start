@@ -874,7 +874,7 @@ scene.add(spotLight);
         console.log(obj);
         obj.position.y = 50;
         obj.position.z = 50;
-        obj.scale(x, y);
+        // obj.scale(x, y);
         
         scene.add(obj);
 
