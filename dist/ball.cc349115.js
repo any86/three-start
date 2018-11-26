@@ -36048,38 +36048,12 @@ var index = {
 };
 var _default = index;
 exports.default = _default;
-},{}],"ball.ts":[function(require,module,exports) {
+},{}],"object3D/loadObj.ts":[function(require,module,exports) {
 "use strict";
 
-var __importStar = this && this.__importStar || function (mod) {
-  if (mod && mod.__esModule) return mod;
-  var result = {};
-  if (mod != null) for (var k in mod) {
-    if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-  }
-  result["default"] = mod;
-  return result;
-};
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
 exports.__esModule = true;
-var box = document.createElement('div');
-box.id = 'box'; // import AnyTouch from '../../src/main';
 
-var THREE = __importStar(require("three"));
-
-var plane_1 = __importDefault(require("./object3D/plane"));
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
-
-THREE.OBJLoader = function () {
+function default_1(THREE) {
   // o object_name | g group_name
   var object_pattern = /^[og]\s*(.+)?/; // mtllib file_reference
 
@@ -36602,8 +36576,75 @@ THREE.OBJLoader = function () {
       return container;
     }
   };
+  THREE.OBJLoader = OBJLoader;
   return OBJLoader;
-}();
+}
+
+exports["default"] = default_1;
+;
+},{}],"object3D/load.ts":[function(require,module,exports) {
+"use strict";
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+  }
+  result["default"] = mod;
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+exports.__esModule = true;
+
+var THREE = __importStar(require("three"));
+
+var loadObj_1 = __importDefault(require("../object3D/loadObj"));
+
+loadObj_1["default"](THREE);
+var objLoader = new THREE.OBJLoader();
+
+exports["default"] = function (url) {
+  return new Promise(function (resolve, reject) {
+    try {
+      objLoader.load(url, function (obj) {
+        resolve(obj);
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+},{"three":"node_modules/three/build/three.module.js","../object3D/loadObj":"object3D/loadObj.ts"}],"ball.ts":[function(require,module,exports) {
+"use strict";
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+  }
+  result["default"] = mod;
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+exports.__esModule = true; // import AnyTouch from '../../src/main';
+
+var THREE = __importStar(require("three"));
+
+var plane_1 = __importDefault(require("./object3D/plane"));
 
 var Scene = THREE.Scene,
     ObjectLoader = THREE.ObjectLoader,
@@ -36621,6 +36662,13 @@ var Scene = THREE.Scene,
     CubeGeometry = THREE.CubeGeometry,
     Object3D = THREE.Object3D; // 渲染器
 
+var box = document.getElementById('box');
+
+if (undefined === box) {
+  box = document.createElement('div');
+  box.id = 'box';
+}
+
 var renderer = new WebGLRenderer({
   antialias: true
 });
@@ -36632,7 +36680,10 @@ renderer.shadowMap.enabled = true;
 var position = {
   x: 188,
   y: 36,
-  z: 210
+  z: 210,
+  cameraX: 0,
+  cameraY: 100,
+  cameraZ: 100
 };
 
 var dat = require('dat.gui');
@@ -36640,15 +36691,14 @@ var dat = require('dat.gui');
 var gui = new dat.GUI();
 gui.add(position, 'x', -1000, 1000);
 gui.add(position, 'y', -1000, 1000);
-gui.add(position, 'z', -1000, 1000); // 场景
+gui.add(position, 'z', -1000, 1000);
+gui.add(position, 'cameraX', -1000, 1000);
+gui.add(position, 'cameraY', -1000, 1000);
+gui.add(position, 'cameraZ', -1000, 1000); // 场景
 
 var scene = new Scene(); // 相机
 
-var camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.x = 0;
-camera.position.y = 100;
-camera.position.z = 100;
-camera.lookAt(scene.position); // 辅助线
+var camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000); // 辅助线
 
 scene.add(new AxesHelper(130)); // 平面
 
@@ -36659,36 +36709,35 @@ scene.add(plane_1["default"]()); // 球体
 var spotLight = new SpotLight(0xffffff);
 spotLight.position.set(-40, 60, 300);
 spotLight.castShadow = true;
-scene.add(spotLight); // import OBJLoader from 'three-obj-loader'
-//     OBJLoader(THREE);
+scene.add(spotLight); // import OBJLoader from './object3D/loadObj'
+// OBJLoader(THREE);
 
-var objLoader = new THREE.OBJLoader();
-objLoader.load('EW001.obj', function (obj) {
+var load_1 = __importDefault(require("./object3D/load"));
+
+load_1["default"]('a.obj').then(function (obj) {
   // scene.add(createBox());
-  console.log(obj);
+  // console.log(obj);
   obj.position.y = 50;
-  obj.position.z = 50; // obj.scale(x, y);
-
+  obj.position.z = 50;
   scene.add(obj);
-  scene.remove(spotLight);
-  spotLight = new SpotLight(0xffffff);
-  spotLight.position.set(position.x, position.y, position.z);
-  spotLight.castShadow = true;
-  scene.add(spotLight); // 开始渲染
 
-  renderer.render(scene, camera);
-}); // function render3() {
-//     requestAnimationFrame(render3);
-//     scene.remove(spotLight);
-//     spotLight = new SpotLight(0xffffff);
-//     spotLight.position.set(position.x, position.y, position.z);
-//     spotLight.castShadow = true;
-//     scene.add(spotLight);
-//     // 开始渲染
-//     renderer.render(scene, camera);
-// }
-// render3();
-// const log = console.log;
+  function render3() {
+    requestAnimationFrame(render3);
+    scene.remove(spotLight);
+    spotLight = new SpotLight(0xffffff);
+    spotLight.position.set(position.x, position.y, position.z);
+    spotLight.castShadow = true;
+    scene.add(spotLight);
+    camera.position.x = position.cameraX;
+    camera.position.y = position.cameraY;
+    camera.position.z = position.cameraZ;
+    camera.lookAt(scene.position); // 开始渲染
+
+    renderer.render(scene, camera);
+  }
+
+  render3();
+}); // const log = console.log;
 // const tap2 = new AnyTouch.TapRecognizer({ name: 'doubletap', pointer: 1, taps: 2 })
 // const tap3 = new AnyTouch.TapRecognizer({ name: 'threetap', pointer: 1, taps: 3 })
 // const anyTouch = new AnyTouch(box);
@@ -36713,7 +36762,7 @@ objLoader.load('EW001.obj', function (obj) {
 // anyTouch.on('panright', e => {
 //     // console.warn(e.type);
 // });
-},{"three":"node_modules/three/build/three.module.js","./object3D/plane":"object3D/plane.ts","dat.gui":"node_modules/dat.gui/build/dat.gui.module.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"three":"node_modules/three/build/three.module.js","./object3D/plane":"object3D/plane.ts","dat.gui":"node_modules/dat.gui/build/dat.gui.module.js","./object3D/load":"object3D/load.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -36740,7 +36789,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65177" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52771" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
