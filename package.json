@@ -7,6 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "5a.css": "^0.1.19",
     "@types/three": "^0.136.1",
     "three": "^0.136.0",
     "vue": "^3.2.25"

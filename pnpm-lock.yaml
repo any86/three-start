@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  5a.css: ^0.1.19
   '@types/three': ^0.136.1
   '@vitejs/plugin-vue': ^2.0.0
   three: ^0.136.0
@@ -10,6 +11,7 @@ specifiers:
   vue-tsc: ^0.29.8
 
 dependencies:
+  5a.css: 0.1.19
   '@types/three': 0.136.1
   three: 0.136.0
   vue: 3.2.29
@@ -21,6 +23,36 @@ devDependencies:
   vue-tsc: 0.29.8_typescript@4.5.5
 
 packages:
+
+  /5a.css/0.1.19:
+    resolution: {integrity: sha512-QzXzF6+fQohTRrm0ZyGzcBcFlSb8qeFiT9hzu6q9Y/EZHCFhXVrjXyW7s5eZm55FDKSmahtRBnxeTmswzlR+iw==}
+    dependencies:
+      '@5a.css/functions': 0.1.19
+      '@5a.css/helpers': 0.1.19
+      '@5a.css/mixins': 0.1.19
+      '@5a.css/reset': 0.1.19
+      '@5a.css/vars': 0.1.19
+    dev: false
+
+  /@5a.css/functions/0.1.19:
+    resolution: {integrity: sha512-Mm0jHxPNshZt3HH5aSp7NBOHZfI3QxOGESFH0nRNHHleD+SgPHTxKy7zPIBoZtBhXhWd7wzhl/3nJUTP/zb67A==}
+    dev: false
+
+  /@5a.css/helpers/0.1.19:
+    resolution: {integrity: sha512-t2o8MRGFdRUA4YBiN5Q7rJaWZiwyfqqebYetnAIymQuWVz83iM2ZmKJSDSTuZDsirO4iw4ooXlSJwEXt+ds91A==}
+    dev: false
+
+  /@5a.css/mixins/0.1.19:
+    resolution: {integrity: sha512-LfgDY4ov3MPF5xXykBXo6LCxoYvumWslUtRB1Idoc9Abhlh/V9b328ISCxxFxklf8D59c2WKNhl3lUQehXLB0A==}
+    dev: false
+
+  /@5a.css/reset/0.1.19:
+    resolution: {integrity: sha512-zUsWZ0EzJLGszTf9nH9Dhzcnr26POb1Qeb8akxP5EIjE2GV/Hk+/z3OQxDWFUzo5SBMdyoeXilJbVJNDyLA9oQ==}
+    dev: false
+
+  /@5a.css/vars/0.1.19:
+    resolution: {integrity: sha512-4tTOq1sN8gSQZ1MdUnkmQZ3LcXZ8kERg+d9olTdazJJZvu93CQyOrUp1arOvLZYVvXqWdsonDmEeWDNXuUQdSw==}
+    dev: false
 
   /@babel/helper-validator-identifier/7.16.7:
     resolution: {integrity: sha512-hsEnFemeiW4D08A5gUAZxLBTXpZ39P+a+DGDsHw1yxqyQ/jzFEnxf5uTEGp+3bzAbNOxU1paTgYS4ECU/IgfDw==}

@@ -1,18 +1,18 @@
 import * as THREE from "three";
 import type { Mesh, Object3D } from "three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import {DragControls} from 'three/examples/jsm/controls/DragControls';
+import { DragControls } from 'three/examples/jsm/controls/DragControls';
 import { type Ref } from 'vue';
 
 
 
-export default function (wrapRef: Ref<HTMLElement>) {
+export default function (wrapRef: Ref<HTMLElement>, distance: [Ref<number>, Ref<number>, Ref<number>], scale: [Ref<number>, Ref<number>, Ref<number>], rotation: [Ref<number>, Ref<number>, Ref<number>]) {
   const scene = new THREE.Scene();
 
 
   const helper = new THREE.GridHelper(10)
   scene.add(helper)
-  helper.rotateZ(90/180*Math.PI)
+  helper.rotateZ(90 / 180 * Math.PI)
 
 
   // 光源
@@ -44,35 +44,31 @@ export default function (wrapRef: Ref<HTMLElement>) {
     0.1,
     100
   );
-  camera.lookAt(0,0,0);
+  camera.lookAt(0, 0, 0);
 
 
   let mesh3: Object3D;
-
   const loader = new GLTFLoader();
   loader.load('/1.glb', function (gltf) {
     console.log(gltf.scene);
     mesh3 = gltf.scene.children[2];
     scene.add(gltf.scene);
-    mesh3.rotation.set(10, 10, 10);
 
-
-
-    const controls = new DragControls( [mesh3], camera, renderer.domElement );
+    const controls = new DragControls([mesh3], camera, renderer.domElement);
 
     // add event listener to highlight dragged objects
-    
-    controls.addEventListener( 'dragstart', function ( event ) {
-    console.log();
-      event.object.material.emissive.set( 0xaaaaaa );
-    console.log(event);
-    } );
-    
-    controls.addEventListener( 'dragend', function ( event ) {
-    
-      event.object.material.emissive.set( 0x000000 );
-    
-    } );
+
+    controls.addEventListener('dragstart', function (event) {
+      console.log();
+      event.object.material.emissive.set(0xaaaaaa);
+      console.log(event);
+    });
+
+    controls.addEventListener('dragend', function (event) {
+
+      event.object.material.emissive.set(0x000000);
+
+    });
 
 
 
@@ -94,33 +90,34 @@ export default function (wrapRef: Ref<HTMLElement>) {
   const material = new THREE.MeshBasicMaterial({ color: 0x6699cc });
   const cube = new THREE.Mesh(geometry, material);
   // scene.add(cube);
-  camera.position.x = 1;
-  camera.position.y = 1;
+  camera.position.x = 0;
+  camera.position.y = 0;
   camera.position.z = 15;
-
-
-
-
-
 
 
   function animate() {
     requestAnimationFrame(animate);
-    // if (mesh3) {
-    //   mesh3.rotation.x += 0.01;
-    //   mesh3.rotation.y += 0.01;
-    //   if (mesh3.scale.x > 3) {
-    //     mesh3.scale.x -= 0.01;
-    //     mesh3.scale.y -= 0.01;
-    //     mesh3.scale.z -= 0.01;
+    if (mesh3) {
+      const [rotationX,rotationY,rotationZ] = rotation;
+      const [scaleX,scaleY,scaleZ] = scale;
+      const [x,y,z] = distance;
+      mesh3.rotation.set(rotationX.value, rotationY.value, rotationZ.value);
+      mesh3.scale.set(scaleX.value, scaleY.value, scaleZ.value);
+      mesh3.position.set(x.value,y.value,z.value);
+      // mesh3.rotation.x += 0.01;
+      // mesh3.rotation.y += 0.01;
+      // if (mesh3.scale.x > 3) {
+      //   mesh3.scale.x -= 0.01;
+      //   mesh3.scale.y -= 0.01;
+      //   mesh3.scale.z -= 0.01;
 
-    //   } else {
-    //     mesh3.scale.x += 0.01;
-    //     mesh3.scale.y += 0.01;
-    //     mesh3.scale.z += 0.01;
+      // } else {
+      //   mesh3.scale.x += 0.01;
+      //   mesh3.scale.y += 0.01;
+      //   mesh3.scale.z += 0.01;
 
-    //   }
-    // }
+      // }
+    }
     renderer.render(scene, camera);
   }
 
